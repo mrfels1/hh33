@@ -36,6 +36,8 @@ class BookController extends Controller
     {
         $query = Book::find();
 
+        $query->select(['title', 'author_id', 'pages', 'language', 'genre']);
+
         $request = \Yii::$app->request;
 
         $search = $request->get('search');
