@@ -51,7 +51,7 @@ $config = [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['book'],
+                    'controller' => ['book', 'author'],
                     'pluralize' => true, // ???
                 ],
             ],
