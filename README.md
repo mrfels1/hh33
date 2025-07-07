@@ -6,7 +6,7 @@ php yii serve --port 8081
 
 Генерация документации:
 
-./vendor/bin/openapi -b ./OpenApi/swagger-bootstrap.php -o ./web/swagger-ui/swagger.json -e ./vendor ./ 
+./vendor/bin/openapi -b ./OpenApi/swagger-bootstrap.php -o ./web/swagger-ui/swagger.json -e ./vendor ./
 
 Swagger-ui:
 
