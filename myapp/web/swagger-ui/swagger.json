@@ -1,0 +1,667 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "HH33 API Specification",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://localhost",
+            "description": "API server"
+        }
+    ],
+    "paths": {
+        "/authors": {
+            "get": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Получить список авторов",
+                "description": "Возвращает список авторов без поля id.",
+                "operationId": "getGetauthors",
+                "responses": {
+                    "200": {
+                        "description": "Возвращает массив объектов авторов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AuthorResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Создать нового автора",
+                "operationId": "782fd7223dd11e77cd162de62325ec7f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Author"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Автор создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Author"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/authors/{id}": {
+            "put": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Обновление объекта автора",
+                "operationId": "fe8868dad76b180a69e6ea9bdfe066c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id изменяеемого автора",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Author"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Автор обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Author"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "запись не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Удалить автора",
+                "operationId": "1d504531461276164f4070325cd497b3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID автора",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Автор успешно удален",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "message"
+                                    ],
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Removed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Автор не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при удалении",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "errors"
+                                    ],
+                                    "properties": {
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "Delete failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/books": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Список книг",
+                "description": "Получить список книг с возможностью фильтрации по названию/описанию и авторам",
+                "operationId": "101458f1cdc8a823172815d0d500b484",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Поиск по названию или описанию книги",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "author[]",
+                        "in": "query",
+                        "description": "Фильтр по id авторов",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список книг",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/BookResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Создать новую книгу",
+                "operationId": "3096bbcd2efa33183e5c6ed1cf9749a9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Book"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Кинига создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/books/{id}": {
+            "put": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Обновление объекта книги",
+                "operationId": "e4536fd96f4d58f87e35b5388d7e9871",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id изменяеемого книги",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Book"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Книга обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "запись не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Удалить книгу",
+                "operationId": "37e3352905a1a7ddaea880b6e7302615",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id удаляемой книги",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Книга успешно удалена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "message"
+                                    ],
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Removed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Книга не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpException"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при удалении",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "errors"
+                                    ],
+                                    "properties": {
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "Delete failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuthorResponse": {
+                "title": "AuthorResponse",
+                "description": "Автор без поля id",
+                "required": [
+                    "name",
+                    "birth_year",
+                    "country"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Name of the author",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "birth_year": {
+                        "description": "Year the author was born",
+                        "type": "integer"
+                    },
+                    "country": {
+                        "description": "Country of the author",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BookResponse": {
+                "title": "BookResponse",
+                "description": "Book Model without id field",
+                "required": [
+                    "title",
+                    "author_id",
+                    "pages",
+                    "language",
+                    "genre",
+                    "description"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Book title",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "author_id": {
+                        "description": "Author of the book",
+                        "type": "integer"
+                    },
+                    "pages": {
+                        "description": "Number of pages in the book",
+                        "type": "integer"
+                    },
+                    "language": {
+                        "description": "Language of the book",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "genre": {
+                        "description": "Genre of the book",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "description": {
+                        "description": "Short summary of the book",
+                        "type": "text"
+                    }
+                },
+                "type": "object"
+            },
+            "HttpException": {
+                "description": "HttpException",
+                "properties": {
+                    "name": {
+                        "description": "Краткое название ошибки",
+                        "type": "string"
+                    },
+                    "message": {
+                        "description": "Сообщение об ошибке",
+                        "type": "string"
+                    },
+                    "code": {
+                        "description": "Код внутренней ошибки",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "HTTP-статус ответа",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "description": "Тип исключения",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationError": {
+                "description": "Ответ ошибки валидации",
+                "properties": {
+                    "errors": {
+                        "description": "Список ошибок по каждому полю",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Author": {
+                "title": "Author",
+                "description": "Author Model",
+                "required": [
+                    "name",
+                    "birth_year",
+                    "country"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier of the author",
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "description": "Name of the author",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "birth_year": {
+                        "description": "Year the author was born",
+                        "type": "integer"
+                    },
+                    "country": {
+                        "description": "Country of the author",
+                        "type": "string",
+                        "maxLength": 65535
+                    }
+                },
+                "type": "object"
+            },
+            "Book": {
+                "title": "Book",
+                "description": "Book Model",
+                "required": [
+                    "title",
+                    "author_id",
+                    "pages",
+                    "language",
+                    "genre",
+                    "description"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier of the book",
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "description": "Book title",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "author_id": {
+                        "description": "Author of the book",
+                        "type": "integer"
+                    },
+                    "pages": {
+                        "description": "Number of pages in the book",
+                        "type": "integer"
+                    },
+                    "language": {
+                        "description": "Language of the book",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "genre": {
+                        "description": "Genre of the book",
+                        "type": "string",
+                        "maxLength": 65535
+                    },
+                    "description": {
+                        "description": "Short summary of the book",
+                        "type": "text"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Author",
+            "description": "Author API"
+        },
+        {
+            "name": "Book",
+            "description": "Book API"
+        }
+    ]
+}

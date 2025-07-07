@@ -5,32 +5,49 @@ namespace app\models;
 use Yii;
 
 use \yii\db\ActiveRecord;
+use OpenApi\Attributes as OAT;
 
-/**
- * This is the model class for table "author".
- *
- * @property int $id
- * @property string $name
- * @property int $birth_year
- * @property string $country
- *
- * @property Book[] $books
- */
+#[OAT\Schema(
+    title: 'Author',
+    description: 'Author Model',
+    required: ['name', 'birth_year', 'country']
+)]
 class Author extends ActiveRecord
 {
 
+    #[OAT\Property(
+        property: 'id',
+        type: 'integer',
+        readOnly: true,
+        description: 'Unique identifier of the author'
+    )]
 
-    /**
-     * {@inheritdoc}
-     */
+    #[OAT\Property(
+        property: 'name',
+        type: 'string',
+        maxLength: 65535,
+        description: 'Name of the author'
+    )]
+
+    #[OAT\Property(
+        property: 'birth_year',
+        type: 'integer',
+        description: 'Year the author was born'
+    )]
+
+    #[OAT\Property(
+        property: 'country',
+        type: 'string',
+        maxLength: 65535,
+        description: 'Country of the author'
+    )]
+
     public static function tableName()
     {
         return 'author';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -41,9 +58,7 @@ class Author extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function attributeLabels()
     {
         return [
@@ -54,11 +69,7 @@ class Author extends ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Books]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
+
     public function getBooks()
     {
         return $this->hasMany(Book::class, ['author_id' => 'id']);

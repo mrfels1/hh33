@@ -2,38 +2,68 @@
 
 namespace app\models;
 
-use Yii;
-
 use \yii\db\ActiveRecord;
+use OpenApi\Attributes as OAT;
 
-/**
- * This is the model class for table "book".
- *
- * @property int $id
- * @property string $title
- * @property int $author_id
- * @property int $pages
- * @property string $language
- * @property string $genre
- * @property string $description
- *
- * @property Author $author
- */
+#[OAT\Schema(
+    title: 'Book',
+    description: 'Book Model',
+    required: ['title', 'author_id', 'pages', 'language', 'genre', 'description']
+)]
 class Book extends ActiveRecord
 {
 
+    #[OAT\Property(
+        property: 'id',
+        type: 'integer',
+        readOnly: true,
+        description: 'Unique identifier of the book'
+    )]
+    #[OAT\Property(
+        property: 'title',
+        type: 'string',
+        maxLength: 65535,
+        description: 'Book title',
+        nullable: false
+    )]
+    #[OAT\Property(
+        property: 'author_id',
+        type: 'integer',
+        description: 'Author of the book',
+        nullable: false
+    )]
+    #[OAT\Property(
+        property: 'pages',
+        type: 'integer',
+        description: 'Number of pages in the book',
+        nullable: false
+    )]
+    #[OAT\Property(
+        property: 'language',
+        type: 'string',
+        maxLength: 65535,
+        description: 'Language of the book',
+        nullable: false
+    )]
+    #[OAT\Property(
+        property: 'genre',
+        type: 'string',
+        maxLength: 65535,
+        description: 'Genre of the book',
+        nullable: false
+    )]
+    #[OAT\Property(
+        property: 'description',
+        type: 'text',
+        description: 'Short summary of the book'
+    )]
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'book';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -45,9 +75,7 @@ class Book extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function attributeLabels()
     {
         return [
@@ -60,12 +88,6 @@ class Book extends ActiveRecord
             'description' => 'Description',
         ];
     }
-
-    /**
-     * Gets query for [[Author]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getAuthor()
     {
         return $this->hasOne(Author::class, ['id' => 'author_id']);
