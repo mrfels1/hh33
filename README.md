@@ -2,6 +2,10 @@
 
 Postgres + pgadmin в docker-compose.yml.exmpl
 
+composer install
+
+php yii migrate
+
 php yii serve --port 8081 
 
 Генерация документации:
