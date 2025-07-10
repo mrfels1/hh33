@@ -54,7 +54,35 @@ class BookController extends Controller
                 required: false,
                 description: "Фильтр по id авторов",
                 schema: new OAT\Schema(type: "array", items: new OAT\Items(type: "integer"))
-            )
+            ),
+            new OAT\Parameter(
+                name: "language[]",
+                in: "query",
+                required: false,
+                description: "Фильтр по языкам",
+                schema: new OAT\Schema(type: "array", items: new OAT\Items(type: "string"))
+            ),
+            new OAT\Parameter(
+                name: "genre",
+                in: "query",
+                required: false,
+                description: "Поиск по жанру",
+                schema: new OAT\Schema(type: "string")
+            ),
+            new OAT\Parameter(
+                name: "pages_from",
+                in: "query",
+                required: false,
+                description: "Число страниц ОТ (включительно)",
+                schema: new OAT\Schema(type: "integer")
+            ),
+            new OAT\Parameter(
+                name: "pages_to",
+                in: "query",
+                required: false,
+                description: "Число страниц ДО (включительно)",
+                schema: new OAT\Schema(type: "integer")
+            ),
         ],
         responses: [
             new OAT\Response(
@@ -86,8 +114,8 @@ class BookController extends Controller
         if (!empty($search)) {
             $query->andWhere([
                 'or',
-                ['like', 'title', $search],
-                ['like', 'description', $search],
+                ['ilike', 'title', $search],
+                ['ilike', 'description', $search],
             ]);
         }
 
@@ -96,6 +124,25 @@ class BookController extends Controller
             $query->andWhere(['author_id' => $authorIds]);
         }
 
+        $languages = $request->get('language');
+        if (is_array($languages) && !empty($languages)) {
+            $query->andWhere(['ilike', 'language', $languages]);
+        }
+
+        $pages_from = $request->get('pages_from');
+        if (!empty($pages_from)) {
+            $query->andwhere(['>=', 'pages', $pages_from]);
+        }
+
+        $pages_to = $request->get('pages_to');
+        if (!empty($pages_to)) {
+            $query->andwhere(['<=', 'pages', $pages_to]);
+        }
+
+        $genre = $request->get('genre');
+        if (!empty($genre)) {
+            $query->andWhere(['ilike', 'genre', $genre]);
+        }
         return $query->all();
     }
 

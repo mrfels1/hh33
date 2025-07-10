@@ -254,6 +254,45 @@
                                 "type": "integer"
                             }
                         }
+                    },
+                    {
+                        "name": "language[]",
+                        "in": "query",
+                        "description": "Фильтр по языкам",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "genre",
+                        "in": "query",
+                        "description": "Поиск по жанру",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pages_from",
+                        "in": "query",
+                        "description": "Число страниц ОТ (включительно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pages_to",
+                        "in": "query",
+                        "description": "Число страниц ДО (включительно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -477,7 +516,7 @@
                     "name": {
                         "description": "Name of the author",
                         "type": "string",
-                        "maxLength": 255
+                        "maxLength": 65535
                     },
                     "birth_year": {
                         "description": "Year the author was born",
