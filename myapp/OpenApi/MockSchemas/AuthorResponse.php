@@ -14,7 +14,7 @@ class AuthorResponse
     #[OAT\Property(
         property: 'name',
         type: 'string',
-        maxLength: 255,
+        maxLength: 65535,
         description: 'Name of the author'
     )]
     public string $name;
