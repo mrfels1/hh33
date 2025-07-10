@@ -5,7 +5,6 @@ namespace app\controllers;
 use yii\rest\Controller;
 
 use app\models\Author;
-use app\models\AuthorResponse;
 
 
 use yii\filters\VerbFilter;

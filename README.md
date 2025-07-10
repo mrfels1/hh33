@@ -14,4 +14,4 @@ php yii serve --port 8081
 
 Swagger-ui:
 
-http://localhost:8081/swagger-ui
+http://localhost:8081/swagger-ui/
